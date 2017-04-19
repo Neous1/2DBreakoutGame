@@ -4,7 +4,7 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 var paddleHeight = 10;
-var paddleWidth = 75;
+var paddleWidth = 50;
 var paddleX = (canvas.width-paddleWidth)/2;
 
 var x = canvas.width/2;
@@ -35,11 +35,24 @@ function draw() {
     x += dx;
     y += dy;
     
-    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius){
-        dy = -dy;
-    }    
+//    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius){
+//        dy = -dy;
+//    }    
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius){
         dx = -dx;
+    }
+    
+    if (y + dy < ballRadius) {
+        dy = -dy;
+    }else if(y + dy > canvas.height-ballRadius){
+        if (x > paddleX && x < paddleX + paddleWidth){
+            dy = -dy;
+        }
+        else {
+            alert ("Game OVER");
+            document.location.reload();    
+        }
+        
     }
     
     if(rightPressed && paddleX < canvas.width - paddleWidth){
