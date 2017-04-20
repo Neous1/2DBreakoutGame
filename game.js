@@ -4,7 +4,7 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 var paddleHeight = 10;
-var paddleWidth = 50;
+var paddleWidth = 500;
 var paddleX = (canvas.width-paddleWidth)/2;
 
 var x = canvas.width/2;
@@ -15,6 +15,22 @@ var ballRadius = 10;
 
 var rightPressed = false;
 var leftPressed = false;
+
+var brickRowCount = 3; 
+var brickColumnCount = 5; 
+var brickWidth = 75; 
+var brickHeight = 20; 
+var brickPadding = 10; 
+var brickOffsetTop = 30; 
+var brickOffsetLeft = 30; 
+
+var bricks = [];
+for (c = 0; c< brickColumnCount; c++){
+    bricks[c] = [];
+    for (r =0; r < brickRowCount; r++){
+        bricks[c][r] = {x: 0, y: 0};
+    }
+}
 
 
 function drawBall() {
@@ -29,6 +45,7 @@ function drawBall() {
 function draw() {
     
     ctx.clearRect(0,0, canvas.width, canvas.height);
+    drawBricks();
     drawBall();
     drawPaddle();
     
@@ -44,12 +61,13 @@ function draw() {
     
     if (y + dy < ballRadius) {
         dy = -dy;
-    }else if(y + dy > canvas.height-ballRadius){
+    }
+    else if(y + dy > canvas.height-ballRadius){
         if (x > paddleX && x < paddleX + paddleWidth){
             dy = -dy;
         }
         else {
-            alert ("Game OVER");
+            alert ("GAME OVER");
             document.location.reload();    
         }
         
@@ -71,6 +89,21 @@ function drawPaddle(){
     ctx.closePath();
 }
 
+function drawBricks(){
+    for(c = 0; c < brickColumnCount; c++){
+        for(r = 0; r < brickRowCount; r++){
+            var brickX = (c*(brickWidth + brickPadding))+ brickOffsetLeft;
+            var brickY = (r*(brickHeight + brickPadding))+ brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(0, 0, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
